@@ -1988,6 +1988,32 @@ final class MapLibreMapController
         result.success(reply);
         break;
       }
+      case "style#getAttributions":
+      {
+        // Attributions of every source in the style, in style order, regardless
+        // of layer visibility. The Dart side dedupes. Used by apps that render
+        // the attributions themselves (attributionButtonEnabled = false).
+        if (style == null || !style.isFullyLoaded()) {
+          result.error(
+                  "STYLE_NOT_READY",
+                  "Style is null or not fully loaded. Has onStyleLoaded() already been invoked?",
+                  null);
+          break;
+        }
+        Map<String, Object> reply = new HashMap<>();
+
+        List<String> attributions = new ArrayList<>();
+        for (Source source : style.getSources()) {
+          final String attribution = source.getAttribution();
+          if (attribution != null && !attribution.isEmpty()) {
+            attributions.add(attribution);
+          }
+        }
+
+        reply.put("attributions", attributions);
+        result.success(reply);
+        break;
+      }
       case "style#setStyle":
       {
         // Getting style json, url, path etc. from the flutter side
@@ -2519,6 +2545,11 @@ final class MapLibreMapController
         mapLibreMap.getUiSettings().setCompassMargins(0, 0, x, y);
         break;
     }
+  }
+
+  @Override
+  public void setAttributionButtonEnabled(boolean enabled) {
+    mapLibreMap.getUiSettings().setAttributionEnabled(enabled);
   }
 
   @Override

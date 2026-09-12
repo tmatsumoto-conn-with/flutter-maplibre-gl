@@ -87,6 +87,9 @@ class Convert {
         options['compassViewMargins'][1],
       );
     }
+    if (options.containsKey('attributionButtonEnabled')) {
+      sink.setAttributionButtonEnabled(options['attributionButtonEnabled']);
+    }
     if (options.containsKey('attributionButtonPosition')) {
       final position =
           AttributionButtonPosition

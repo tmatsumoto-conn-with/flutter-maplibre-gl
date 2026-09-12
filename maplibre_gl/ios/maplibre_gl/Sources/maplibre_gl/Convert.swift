@@ -79,6 +79,9 @@ class Convert {
         if let compassViewMargins = options["compassViewMargins"] as? [Double] {
             delegate.setCompassViewMargins(x: compassViewMargins[0], y: compassViewMargins[1])
         }
+        if let attributionButtonEnabled = options["attributionButtonEnabled"] as? Bool {
+            delegate.setAttributionButtonEnabled(enabled: attributionButtonEnabled)
+        }
         if let attributionButtonMargins = options["attributionButtonMargins"] as? [Double] {
             delegate.setAttributionButtonMargins(
                 x: attributionButtonMargins[0],

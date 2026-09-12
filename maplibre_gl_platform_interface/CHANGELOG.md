@@ -1,3 +1,10 @@
+## Unreleased (fork)
+
+Fork `tmatsumoto-conn-with/flutter-maplibre-gl`, branch `custom-attribution-0.26.2`. See root `FORK.md`.
+
+### Added
+* `MapLibrePlatform.getAttributions()` / channel method `style#getAttributions` (attribution strings of every source in the current style, regardless of layer visibility).
+
 ## [0.26.2](https://github.com/maplibre/flutter-maplibre-gl/compare/v0.26.1...v0.26.2)
 
 No platform-interface changes; version aligned with the `maplibre_gl` 0.26.2 release. See top-level [CHANGELOG.md](../CHANGELOG.md) for full details.

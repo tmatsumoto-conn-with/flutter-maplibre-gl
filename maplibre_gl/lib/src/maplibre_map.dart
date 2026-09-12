@@ -38,6 +38,7 @@ class MapLibreMap extends StatefulWidget {
     this.logoViewMargins,
     this.compassViewPosition,
     this.compassViewMargins,
+    this.attributionButtonEnabled = true,
     this.attributionButtonPosition = AttributionButtonPosition.bottomRight,
     this.attributionButtonMargins,
     this.scaleControlEnabled = false,
@@ -240,6 +241,20 @@ class MapLibreMap extends StatefulWidget {
 
   /// Set the layout margins for the Compass
   final Point? compassViewMargins;
+
+  /// True if the built-in MapLibre attribution button should be shown.
+  /// Defaults to true.
+  ///
+  /// When false the built-in attribution button is not shown. The app MUST
+  /// then present the attributions itself (e.g. from
+  /// [MapLibreMapController.getAttributions]), as required by the data
+  /// licences (e.g. ODbL for OpenStreetMap).
+  ///
+  /// This mirrors `attributionControl: false` in MapLibre GL JS, where the
+  /// app is expected to render the attributions with its own control. It is
+  /// meant for custom attribution rendering, not for hiding the licence
+  /// notice.
+  final bool attributionButtonEnabled;
 
   /// Set the position for the MapLibre Attribution Button
   /// When set to null, the default value of the underlying MapLibre libraries is used,
@@ -446,6 +461,7 @@ class MapLibreMapOptions {
     this.logoViewMargins,
     this.compassViewPosition,
     this.compassViewMargins,
+    this.attributionButtonEnabled,
     this.attributionButtonPosition,
     this.attributionButtonMargins,
     this.scaleControlEnabled,
@@ -479,6 +495,7 @@ class MapLibreMapOptions {
         logoViewMargins: map.logoViewMargins,
         compassViewPosition: map.compassViewPosition,
         compassViewMargins: map.compassViewMargins,
+        attributionButtonEnabled: map.attributionButtonEnabled,
         attributionButtonPosition: map.attributionButtonPosition,
         attributionButtonMargins: map.attributionButtonMargins,
         scaleControlEnabled: map.scaleControlEnabled,
@@ -524,6 +541,8 @@ class MapLibreMapOptions {
   final CompassViewPosition? compassViewPosition;
 
   final Point? compassViewMargins;
+
+  final bool? attributionButtonEnabled;
 
   final AttributionButtonPosition? attributionButtonPosition;
 
@@ -588,6 +607,7 @@ class MapLibreMapOptions {
     addIfNonNull('logoViewMargins', pointToArray(logoViewMargins));
     addIfNonNull('compassViewPosition', compassViewPosition?.index);
     addIfNonNull('compassViewMargins', pointToArray(compassViewMargins));
+    addIfNonNull('attributionButtonEnabled', attributionButtonEnabled);
     addIfNonNull('attributionButtonPosition', attributionButtonPosition?.index);
     addIfNonNull(
       'attributionButtonMargins',

@@ -1,3 +1,11 @@
+## Unreleased (fork)
+
+Fork: [tmatsumoto-conn-with/flutter-maplibre-gl](https://github.com/tmatsumoto-conn-with/flutter-maplibre-gl), branch `custom-attribution-0.26.2`, based on v0.26.2. See `FORK.md`.
+
+### Added
+* `MapLibreMap(attributionButtonEnabled: false)` hides the built-in attribution button so the app can render the attributions with its own widget. Mirrors `attributionControl: false` of MapLibre GL JS. **The app MUST then show the attributions itself**, as required by the data licences (e.g. ODbL for OpenStreetMap). Android (`UiSettings.setAttributionEnabled`), iOS (`attributionButton.isHidden`), Web (no `AttributionControl` is added).
+* `MapLibreMapController.getAttributions()` returns the attribution strings of every source in the current style (style order, deduplicated, empty strings dropped), regardless of layer visibility. New platform-channel method `style#getAttributions`. Android: `Source.getAttribution()`; iOS: `MLNTileSource.attributionInfos`; Web: `map.getStyle().sources[*].attribution`.
+
 ## [0.26.2](https://github.com/maplibre/flutter-maplibre-gl/compare/v0.26.1...v0.26.2)
 
 > **Note:** This release enforces a minimum Flutter version of **3.29**, which was already required in practice since 0.26.0 but not reflected in the package constraints (#823).

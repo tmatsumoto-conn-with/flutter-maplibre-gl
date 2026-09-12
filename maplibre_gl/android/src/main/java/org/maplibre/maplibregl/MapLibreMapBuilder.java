@@ -16,7 +16,10 @@ import io.flutter.plugin.common.BinaryMessenger;
 class MapLibreMapBuilder implements MapLibreMapOptionsSink {
   public final String TAG = getClass().getSimpleName();
   private final MapLibreMapOptions options =
-      new MapLibreMapOptions().attributionEnabled(true).logoEnabled(false).textureMode(false);
+      new MapLibreMapOptions().logoEnabled(false).textureMode(false);
+  // The attribution button is shown unless the app opts into rendering the
+  // attributions itself (MapLibreMap.attributionButtonEnabled = false).
+  private boolean attributionButtonEnabled = true;
   private boolean trackCameraPosition = false;
   private boolean myLocationEnabled = false;
   private boolean dragEnabled = true;
@@ -34,6 +37,8 @@ class MapLibreMapBuilder implements MapLibreMapOptionsSink {
       Context context,
       BinaryMessenger messenger,
       MapLibreMapsPlugin.LifecycleProvider lifecycleProvider) {
+
+    options.attributionEnabled(attributionButtonEnabled);
 
     final MapLibreMapController controller =
         new MapLibreMapController(
@@ -207,6 +212,11 @@ class MapLibreMapBuilder implements MapLibreMapOptionsSink {
         options.compassMargins(new int[] {0, 0, (int) x, (int) y});
         break;
     }
+  }
+
+  @Override
+  public void setAttributionButtonEnabled(boolean enabled) {
+    this.attributionButtonEnabled = enabled;
   }
 
   @Override

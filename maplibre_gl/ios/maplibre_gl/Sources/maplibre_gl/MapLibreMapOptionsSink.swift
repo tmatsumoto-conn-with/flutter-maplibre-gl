@@ -19,6 +19,7 @@ protocol MapLibreMapOptionsSink {
     func setLogoViewMargins(x: Double, y: Double)
     func setCompassViewPosition(position: MLNOrnamentPosition)
     func setCompassViewMargins(x: Double, y: Double)
+    func setAttributionButtonEnabled(enabled: Bool)
     func setAttributionButtonMargins(x: Double, y: Double)
     func setAttributionButtonPosition(position: MLNOrnamentPosition)
     func setFeatureTapsTriggersMapClick(triggers: Bool)

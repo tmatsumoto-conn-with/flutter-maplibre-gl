@@ -246,6 +246,10 @@ abstract class MapLibrePlatform {
 
   Future<List> getSourceIds();
 
+  /// Returns the attribution strings of all sources in the current style,
+  /// in style order, regardless of layer visibility.
+  Future<List<String>> getAttributions();
+
   Future<void> setFilter(String layerId, dynamic filter);
 
   Future<dynamic> getFilter(String layerId);

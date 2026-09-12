@@ -533,6 +533,31 @@ class MapLibreMap extends Camera {
     return objectKeys(sourcesObj);
   }
 
+  /// Returns the `attribution` of every source in the map style, in style
+  /// order and regardless of layer visibility. Sources without an
+  /// attribution are skipped.
+  ///
+  /// Same data MapLibre GL JS reads for its `AttributionControl`
+  /// (`map.getStyle().sources[*].attribution`).
+  List<String> getSourceAttributions() {
+    final style = jsObject.getStyle();
+    if (style == null) return [];
+
+    final sourcesObj = Style.fromJsObject(style).sources;
+    if (sourcesObj == null) return [];
+
+    final attributions = <String>[];
+    for (final sourceId in objectKeys(sourcesObj)) {
+      final source = getJsProperty(sourcesObj, sourceId);
+      if (source == null) continue;
+      final attribution = getJsProperty(source as JSObject, 'attribution');
+      if (attribution != null && attribution.isA<JSString>()) {
+        attributions.add((attribution as JSString).toDart);
+      }
+    }
+    return attributions;
+  }
+
   ///  Returns a Boolean indicating whether the map's style is fully loaded.
   ///
   ///  @returns {boolean} A Boolean indicating whether the style is fully loaded.

@@ -1232,6 +1232,29 @@ class MapLibreMapController: NSObject, FlutterPlatformView, MLNMapViewDelegate, 
             reply["sources"] = sourceIds as NSObject
             result(reply)
 
+        case "style#getAttributions":
+            // Attributions of every tile source in the style, in style order,
+            // regardless of layer visibility. The Dart side dedupes. Used by
+            // apps that render the attributions themselves
+            // (attributionButtonEnabled = false).
+            var attributions = [String]()
+
+            guard let style = mapView.style else { return }
+
+            style.sources.forEach { source in
+                guard let tileSource = source as? MLNTileSource else { return }
+                tileSource.attributionInfos.forEach { info in
+                    let title = info.title.string
+                    if !title.isEmpty {
+                        attributions.append(title)
+                    }
+                }
+            }
+
+            var reply = [String: NSObject]()
+            reply["attributions"] = attributions as NSObject
+            result(reply)
+
         case "style#getFilter":
             guard let arguments = methodCall.arguments as? [String: Any] else { return }
             guard let layerId = arguments["layerId"] as? String else { return }
@@ -2312,6 +2335,12 @@ class MapLibreMapController: NSObject, FlutterPlatformView, MLNMapViewDelegate, 
 
     func setCompassViewMargins(x: Double, y: Double) {
         mapView.compassViewMargins = CGPoint(x: x, y: y)
+    }
+
+    func setAttributionButtonEnabled(enabled: Bool) {
+        // Hidden only when the app renders the attributions itself
+        // (see MapLibreMap.attributionButtonEnabled and style#getAttributions).
+        mapView.attributionButton.isHidden = !enabled
     }
 
     func setAttributionButtonMargins(x: Double, y: Double) {

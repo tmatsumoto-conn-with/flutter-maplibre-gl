@@ -1973,6 +1973,30 @@ class MapLibreMapController extends ChangeNotifier {
         .toList();
   }
 
+  /// Returns the attribution strings of the sources in the current style.
+  ///
+  /// The list covers **every** source in the style, regardless of whether a
+  /// layer that uses it is currently visible. Duplicates are removed and the
+  /// order of first occurrence (style order) is kept. Empty attributions are
+  /// dropped.
+  ///
+  /// Use this to render the attributions with your own widget when the
+  /// built-in attribution button is disabled via
+  /// [MapLibreMap.attributionButtonEnabled]. The data licences
+  /// (e.g. ODbL for OpenStreetMap) require the attributions to be shown to
+  /// the user, so an app that hides the button MUST display this list.
+  ///
+  /// Mirrors what `map.getStyle().sources[*].attribution` exposes in
+  /// MapLibre GL JS.
+  Future<List<String>> getAttributions() async {
+    final attributions = await _maplibrePlatform.getAttributions();
+    final seen = <String>{};
+    return [
+      for (final attribution in attributions)
+        if (attribution.isNotEmpty && seen.add(attribution)) attribution,
+    ];
+  }
+
   /// Returns the visibility of a layer.
   /// Returns true if visible, false if hidden, null if layer not found.
   Future<bool?> getLayerVisibility(String layerId) {

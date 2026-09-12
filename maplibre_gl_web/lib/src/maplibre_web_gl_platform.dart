@@ -29,6 +29,14 @@ class MapLibreMapController extends MapLibrePlatform
   String? _navigationControlPosition;
   NavigationControl? _navigationControl;
   AttributionControl? _attributionControl;
+  // The plugin manages its own AttributionControl (the Map is created with
+  // attributionControl: false so it is not added twice). When the app opts
+  // into rendering the attributions itself (attributionButtonEnabled = false,
+  // the equivalent of MapLibre GL JS `attributionControl: false`) no control
+  // is added at all; the data stays reachable via getAttributions().
+  bool _attributionButtonEnabled = true;
+  AttributionButtonPosition _attributionButtonPosition =
+      AttributionButtonPosition.bottomRight;
   ScaleControl? _scaleControl;
   String? _scaleControlPosition;
   Timer? lastResizeObserverTimer;
@@ -879,6 +887,12 @@ class MapLibreMapController extends MapLibrePlatform
   void _updateAttributionButton(
     AttributionButtonPosition position,
   ) {
+    _attributionButtonPosition = position;
+    if (!_attributionButtonEnabled) {
+      _removeAttributionButton();
+      return;
+    }
+
     String? positionString;
     switch (position) {
       case AttributionButtonPosition.topRight:
@@ -906,6 +920,12 @@ class MapLibreMapController extends MapLibrePlatform
   /*
    *  MapLibreMapOptionsSink
    */
+  @override
+  void setAttributionButtonEnabled(bool enabled) {
+    _attributionButtonEnabled = enabled;
+    _updateAttributionButton(_attributionButtonPosition);
+  }
+
   @override
   void setAttributionButtonMargins(int x, int y) {
     print('setAttributionButtonMargins not available in web');
@@ -1784,6 +1804,11 @@ class MapLibreMapController extends MapLibrePlatform
   Future<List> getSourceIds() async {
     final sourceIds = _map.getSourceIds();
     return sourceIds;
+  }
+
+  @override
+  Future<List<String>> getAttributions() async {
+    return _map.getSourceAttributions();
   }
 
   @override

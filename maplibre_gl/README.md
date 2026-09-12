@@ -151,6 +151,40 @@ Restrict keys at the provider (domain/referer, usage caps) and inject them at bu
 
 **Expressions** — data-driven styling follows the MapLibre style spec. For cross-platform safety use `["!", ["has", "field"]]` rather than `["!has", "field"]` (see FAQ).
 
+**Custom attribution rendering** — by default the map shows MapLibre's built-in attribution button. If your app renders the attributions itself (e.g. in an accessible widget of its own, or in a shared "about this map" panel), disable the button and read the attributions from the controller. This mirrors `attributionControl: false` in MapLibre GL JS. **The app MUST then present the attributions itself**, as required by the data licences (e.g. ODbL for OpenStreetMap) — the option exists for custom rendering, not for hiding the licence notice.
+
+```dart
+MapLibreMap(
+  attributionButtonEnabled: false,
+  onMapCreated: (controller) => _controller = controller,
+  onStyleLoadedCallback: () async {
+    // Every source in the style, deduplicated, regardless of layer visibility.
+    final attributions = await _controller.getAttributions();
+    setState(() => _attributions = attributions);
+  },
+)
+
+// ... somewhere visible in the same screen:
+Text(_attributions.join(' | '))
+```
+
+**Custom attribution rendering** — by default the map shows MapLibre's built-in attribution button. If your app renders the attributions itself (e.g. in an accessible widget of its own, or in a shared "about this map" panel), disable the button and read the attributions from the controller. This mirrors `attributionControl: false` in MapLibre GL JS. **The app MUST then present the attributions itself**, as required by the data licences (e.g. ODbL for OpenStreetMap) — the option exists for custom rendering, not for hiding the licence notice.
+
+```dart
+MapLibreMap(
+  attributionButtonEnabled: false,
+  onMapCreated: (controller) => _controller = controller,
+  onStyleLoadedCallback: () async {
+    // Every source in the style, deduplicated, regardless of layer visibility.
+    final attributions = await _controller.getAttributions();
+    setState(() => _attributions = attributions);
+  },
+)
+
+// ... somewhere visible in the same screen:
+Text(_attributions.join(' | '))
+```
+
 **Code generation** — layer/source helpers are generated. Do not edit them directly; run `melos run generate && melos format-all`.
 
 ## Migration

@@ -448,4 +448,33 @@ void main() {
       expect(controller.isDisposed, isTrue);
     });
   });
+
+  group('Attributions', () {
+    test('getAttributions delegates to platform', () async {
+      await controller.getAttributions();
+
+      expect(platform.callsFor('getAttributions').length, 1);
+    });
+
+    test(
+      'getAttributions dedupes while keeping the first occurrence order',
+      () async {
+        platform.attributions = [
+          '© OpenStreetMap contributors',
+          '© Provider',
+          '© OpenStreetMap contributors',
+        ];
+
+        final attributions = await controller.getAttributions();
+
+        expect(attributions, ['© OpenStreetMap contributors', '© Provider']);
+      },
+    );
+
+    test('getAttributions drops empty strings', () async {
+      platform.attributions = ['', '© Provider'];
+
+      expect(await controller.getAttributions(), ['© Provider']);
+    });
+  });
 }

@@ -79,4 +79,44 @@ void main() {
       expect(diff, isEmpty);
     });
   });
+
+  group('MapLibreMapOptions attributionButtonEnabled', () {
+    test('defaults to true and is serialized as attributionButtonEnabled', () {
+      final options = MapLibreMapOptions.fromWidget(MapLibreMap());
+
+      expect(options.toMap()['attributionButtonEnabled'], isTrue);
+    });
+
+    test('serializes false when the app renders attributions itself', () {
+      final options = MapLibreMapOptions.fromWidget(
+        MapLibreMap(attributionButtonEnabled: false),
+      );
+
+      expect(options.toMap()['attributionButtonEnabled'], isFalse);
+    });
+
+    test('updatesMap detects an attributionButtonEnabled change', () {
+      final diff = MapLibreMapOptions.fromWidget(
+        MapLibreMap(),
+      ).updatesMap(
+        MapLibreMapOptions.fromWidget(
+          MapLibreMap(attributionButtonEnabled: false),
+        ),
+      );
+
+      expect(diff['attributionButtonEnabled'], isFalse);
+    });
+
+    test('updatesMap is empty when attributionButtonEnabled is unchanged', () {
+      final diff = MapLibreMapOptions.fromWidget(
+        MapLibreMap(attributionButtonEnabled: false),
+      ).updatesMap(
+        MapLibreMapOptions.fromWidget(
+          MapLibreMap(attributionButtonEnabled: false),
+        ),
+      );
+
+      expect(diff, isEmpty);
+    });
+  });
 }

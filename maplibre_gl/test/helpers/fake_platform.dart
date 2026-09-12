@@ -262,6 +262,15 @@ class FakeMapLibrePlatform extends MapLibrePlatform {
   @override
   Future<List> getSourceIds() async => [];
 
+  /// Attributions returned by [getAttributions].
+  List<String> attributions = [];
+
+  @override
+  Future<List<String>> getAttributions() async {
+    calls.add(PlatformCall('getAttributions'));
+    return attributions;
+  }
+
   @override
   Future<void> setFilter(String layerId, dynamic filter) async {}
 

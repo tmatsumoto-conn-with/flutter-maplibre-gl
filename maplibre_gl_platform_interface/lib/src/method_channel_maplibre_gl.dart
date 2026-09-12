@@ -1135,6 +1135,20 @@ class MapLibreMethodChannel extends MapLibrePlatform {
     }
   }
 
+  @override
+  Future<List<String>> getAttributions() async {
+    try {
+      final Map<dynamic, dynamic> reply = await _channel.invokeMethod(
+        'style#getAttributions',
+      );
+      return (reply['attributions'] as List<dynamic>)
+          .map((it) => it.toString())
+          .toList();
+    } on PlatformException catch (e) {
+      return Future.error(e);
+    }
+  }
+
   /// Method to set style string
   ///
   @override

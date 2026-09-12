@@ -46,6 +46,8 @@ internal interface MapLibreMapOptionsSink {
 
     fun setCompassViewMargins(x: Int, y: Int)
 
+    fun setAttributionButtonEnabled(enabled: Boolean)
+
     fun setAttributionButtonGravity(gravity: Int)
 
     fun setAttributionButtonMargins(x: Int, y: Int)

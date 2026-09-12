@@ -1,5 +1,12 @@
 See top-level [CHANGELOG.md](../CHANGELOG.md) for full details.
 
+## Unreleased (fork)
+
+Fork `tmatsumoto-conn-with/flutter-maplibre-gl`, branch `custom-attribution-0.26.2`. See root `FORK.md`.
+
+### Added
+* `attributionButtonEnabled: false` adds no `AttributionControl` (the app renders the attributions itself; mirrors MapLibre GL JS `attributionControl: false`). `getAttributions()` returns `map.getStyle().sources[*].attribution` for every source in the style.
+
 ## [0.26.2](https://github.com/maplibre/flutter-maplibre-gl/compare/v0.26.1...v0.26.2)
 
 No web-specific changes; version aligned with the `maplibre_gl` 0.26.2 release. See top-level [CHANGELOG.md](../CHANGELOG.md) for full details.
